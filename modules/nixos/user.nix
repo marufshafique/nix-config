@@ -6,6 +6,11 @@
       --ipv6 
       --fixed-cidr-v6="fd00:db8:1::/64"
     '';
+    autoPrune = {
+      enable = true;
+      dates = "weekly";
+      flags = [ "--all" ];
+    };
   };
 
   programs.zsh.enable = true;

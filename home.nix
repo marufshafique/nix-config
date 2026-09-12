@@ -48,6 +48,7 @@
     tree
 
     gcc
+    rust-analyzer
     nodejs_latest
     yarn
     bun
@@ -124,6 +125,7 @@
 
     tree-sitter
     pi-coding-agent
+    opencode
 
     pavucontrol
     audacity

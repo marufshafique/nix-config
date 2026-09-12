@@ -128,11 +128,35 @@ vim.lsp.config("nixd", {
 	root_dir = vim.fs.root(0, { "flake.nix", "default.nix", ".git" }),
 })
 
-vim.lsp.config("rust_analyzer", {
-	cmd = { "rust-analyzer" },
-	filetypes = { "rust" },
-	root_markers = { "Cargo.toml", "rust-project.json", ".git" },
-})
+-- Rust (incl. ESP32 Xtensa): rust-analyzer shells out to `cargo`/`rustc`,
+-- which for ESP work live in ~/.rustup (esp toolchain + Xtensa GCC) and are
+-- NOT on the default NixOS PATH. Inject them here so the LSP works no matter
+-- where nvim was launched from (a direnv .envrc in esp projects is still
+-- useful for the terminal, but the LSP must not depend on it).
+do
+	local home = vim.fn.expand("$HOME")
+	local esp_bin = home .. "/.rustup/toolchains/esp/bin"
+	local xtensa_bin = vim.fn.glob(home .. "/.rustup/toolchains/esp/xtensa-esp-elf/*/xtensa-esp-elf/bin", false, true)[1]
+	local libclang = vim.fn.glob(home .. "/.rustup/toolchains/esp/xtensa-esp32-elf-clang/*/esp-clang/lib", false, true)[1]
+	local cmd = { "env", "PATH=" .. esp_bin .. ":" .. (xtensa_bin or "") .. ":" .. vim.env.PATH }
+	if libclang then
+		table.insert(cmd, "LIBCLANG_PATH=" .. libclang)
+	end
+	table.insert(cmd, "rust-analyzer")
+	vim.lsp.config("rust_analyzer", {
+		cmd = cmd,
+		filetypes = { "rust" },
+		root_markers = { "Cargo.toml", "rust-project.json", ".git" },
+		settings = {
+			["rust-analyzer"] = {
+				-- The ESP (Xtensa) toolchain ships no `test`/`std` sysroot crates
+				-- (bare metal uses build-std with core+alloc only), so checking
+				-- test/bench targets always fails with E0463. Check lib+bins only.
+				check = { allTargets = false },
+			},
+		},
+	})
+end
 
 -- Dart & Flutter Language Server
 -- `dart` is provided by the Flutter SDK (which bundles Dart) or the standalone Dart SDK,
