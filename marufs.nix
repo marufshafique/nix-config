@@ -5,6 +5,7 @@
     ./modules/tmuxconf.nix
     ./modules/helix.nix
     ./modules/neovim.nix
+    ./modules/herdr.nix
   ];
 
   # nix.package = pkgs.nix;
