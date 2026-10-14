@@ -1,117 +1,109 @@
-{ pkgs, ... }:
+# In case you want to pin a specific version of
+# pacakge, you can override the package like this:
+#
+# (pkgs.vimPlugins.codecompanion-nvim.overrideAttrs (old: {
+#   version = "19.14.0";
+#
+#   src = pkgs.fetchFromGitHub {
+#     owner = "olimorris";
+#     repo = "codecompanion.nvim";
+#     tag = "v19.14.0";
+#     hash = "sha256-/cx7LV866OPfTaK781dPbouPRjb2HXJZ3SwGVU/rnsA=";
+#   };
+# }))
 
+{ pkgs, ... }:
+let
+  toLua = str: "\n${str}\n\n";
+  toLuaFile = file: "\n${builtins.readFile file}\n\n";
+  vueLanguageServerPath = "${pkgs.vue-language-server}/lib/language-tools/packages/language-server";
+in
 {
-  programs.neovim =
-  let
-    toLua = str: "lua << EOF\n${str}\nEOF\n";
-    toLuaFile = file: "lua << EOF\n${builtins.readFile file}\nEOF\n";
-  in
-  {
+  programs.neovim = {
     enable = true;
     viAlias = true;
     vimAlias = true;
-
     plugins = with pkgs.vimPlugins; [
-			neo-tree-nvim
-      neodev-nvim
-			plenary-nvim
-			toggleterm-nvim
-			snipe-nvim
-      # none-ls-extras
+      nvim-treesitter
 
-			{
-				plugin = mini-indentscope;
-				config = toLuaFile ./neovim/plugin/indentscope.lua;
-			}
-			{
-				plugin = copilot-cmp;
-				config = toLua "require(\"copilot_cmp\").setup()";
-			}
-			
+      nvim-treesitter-parsers.html
+      nvim-treesitter-parsers.css
+      nvim-treesitter-parsers.javascript
+      nvim-treesitter-parsers.typescript
+      nvim-treesitter-parsers.vue
+      nvim-treesitter-parsers.tsx
+      nvim-treesitter-parsers.go
+      nvim-treesitter-parsers.rust
+      nvim-treesitter-parsers.scss
+      nvim-treesitter-parsers.nix
+      nvim-treesitter-parsers.c
+      nvim-treesitter-parsers.cpp
+      nvim-treesitter-parsers.dart
 
-			{
-				plugin = copilot-lua;
-				config = toLuaFile ./neovim/plugin/copilot.lua;
-			}
-			{
-				plugin = codecompanion-nvim;
-				config = toLuaFile ./neovim/plugin/codecompanion.lua;
-			}
+      copilot-vim
+      comment-nvim
+      nvim-ts-context-commentstring
+      neo-tree-nvim
+      blink-cmp
 
-			{
-				plugin = gitsigns-nvim;
-				config = toLuaFile ./neovim/plugin/gitsigns.lua;
-			}
+      telescope-fzf-native-nvim
+      toggleterm-nvim
+      snipe-nvim
+
+      telescope-nvim
+
+      dressing-nvim
+
+      lualine-nvim
+      nvim-web-devicons
+      plenary-nvim
 
       {
-        plugin = nvim-lspconfig;
-        config = toLuaFile ./neovim/plugin/lsp.lua;
+        plugin = render-markdown-nvim;
+        config = toLuaFile ./neovim/plugin/rendermarkdown.lua;
       }
+
+      mini-pick
+
       {
-        plugin = comment-nvim;
-        config = toLuaFile ./neovim/plugin/comment.lua;
+        plugin = mini-clue;
+        config = toLuaFile ./neovim/plugin/mini-clue.lua;
       }
+
       {
         plugin = gruvbox-nvim;
+        type = "viml";
         config = "colorscheme gruvbox";
       }
 
       {
-        plugin = nvim-cmp;
-        config = toLuaFile ./neovim/plugin/cmp.lua;
+        plugin = nvim-autopairs;
+        type = "lua";
+        config = toLua "require(\"nvim-autopairs\").setup()";
       }
-			{
-				plugin = none-ls-nvim;
-				config = toLuaFile ./neovim/plugin/null-ls.lua;
-			}
-
-			{
-				plugin = nvim-autopairs;
-				config = toLua "require(\"nvim-autopairs\").setup()";
-			}
-
-      telescope-fzf-native-nvim
-      {
-        plugin = telescope-nvim;
-        config = toLuaFile ./neovim/plugin/telescope.lua;
-      }
-
-      # telescope-nvim
-
-      cmp_luasnip
-      cmp-nvim-lsp
-
-      luasnip
-      friendly-snippets
-
-      lualine-nvim
-      nvim-web-devicons
 
       {
-        plugin = (nvim-treesitter.withPlugins (p: [
-          p.tree-sitter-nix
-          p.tree-sitter-vim
-          p.tree-sitter-bash
-          p.tree-sitter-lua
-          p.tree-sitter-python
-          p.tree-sitter-json
-					p.tree-sitter-vue
-					p.tree-sitter-rust
-					p.tree-sitter-javascript
-					p.tree-sitter-typescript
-					p.tree-sitter-css
-        ]));
-        config = toLuaFile ./neovim/plugin/treesitter.lua;
+        plugin = gitsigns-nvim;
+        type = "lua";
+        config = toLuaFile ./neovim/plugin/gitsigns.lua;
       }
 
-      # vim-nix
+      {
+        plugin = conform-nvim;
+        type = "lua";
+        config = toLuaFile ./neovim/plugin/conform.lua;
+      }
     ];
 
-    extraLuaConfig = ''
-      ${builtins.readFile ./neovim/init.lua}
-			${builtins.readFile ./neovim/keymaps.lua}
-			${builtins.readFile ./neovim/plugin/toggleterm.lua}
-			${builtins.readFile ./neovim/plugin/snipe.lua}
+    initLua = ''
+          vim.g.vue_language_server_path = "${vueLanguageServerPath}"
+          ${builtins.readFile ./neovim/init.lua}
+      		${builtins.readFile ./neovim/keymaps.lua}
+          ${builtins.readFile ./neovim/plugin/lsp.lua}
+          ${builtins.readFile ./neovim/plugin/comment.lua}
+          ${builtins.readFile ./neovim/plugin/toggleterm.lua}
+          ${builtins.readFile ./neovim/plugin/snipe.lua}
+          ${builtins.readFile ./neovim/plugin/platformio.lua}
     '';
   };
 }

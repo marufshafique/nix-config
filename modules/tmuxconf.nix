@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 {
   programs.tmux = {
@@ -22,14 +22,16 @@
       vim-tmux-navigator
     ];
     extraConfig = ''
+      set -g extended-keys-format csi-u
       set -g status-position top
+      set -g extended-keys on
+			set -g default-command "${pkgs.zsh}/bin/zsh"
 
       bind '"' split-window -c "#{pane_current_path}"
       bind % split-window -h -c "#{pane_current_path}"
-      bind C new-window -c "#{pane_current_path}"
+      bind c new-window -c "#{pane_current_path}"
 
       run '~/.tmux/plugins/tpm/tpm'
     '';
   };
-
 }

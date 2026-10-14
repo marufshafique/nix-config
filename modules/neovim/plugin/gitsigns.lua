@@ -16,7 +16,7 @@ require("gitsigns").setup({
 			else
 				gitsigns.nav_hunk("next")
 			end
-		end)
+		end, { desc = "Next git hunk" })
 
 		map("n", "[g", function()
 			if vim.wo.diff then
@@ -24,45 +24,45 @@ require("gitsigns").setup({
 			else
 				gitsigns.nav_hunk("prev")
 			end
-		end)
+		end, { desc = "Previous git hunk" })
 
 		-- Actions
-		map("n", "<leader>gs", gitsigns.stage_hunk)
-		map("n", "<leader>gr", gitsigns.reset_hunk)
+		map("n", "<leader>gs", gitsigns.stage_hunk, { desc = "Stage hunk" })
+		map("n", "<leader>gr", gitsigns.reset_hunk, { desc = "Reset hunk" })
 
 		map("v", "<leader>gs", function()
 			gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-		end)
+		end, { desc = "Stage hunk" })
 
 		map("v", "<leader>gr", function()
 			gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-		end)
+		end, { desc = "Reset hunk" })
 
-		map("n", "<leader>gS", gitsigns.stage_buffer)
-		map("n", "<leader>gR", gitsigns.reset_buffer)
-		map("n", "<leader>gp", gitsigns.preview_hunk)
-		map("n", "<leader>gi", gitsigns.preview_hunk_inline)
+		map("n", "<leader>gS", gitsigns.stage_buffer, { desc = "Stage buffer" })
+		map("n", "<leader>gR", gitsigns.reset_buffer, { desc = "Reset buffer" })
+		map("n", "<leader>gp", gitsigns.preview_hunk, { desc = "Preview hunk" })
+		map("n", "<leader>gi", gitsigns.preview_hunk_inline, { desc = "Preview hunk inline" })
 
 		map("n", "<leader>gb", function()
 			gitsigns.blame_line({ full = true })
-		end)
+		end, { desc = "Blame line" })
 
-		map("n", "<leader>gd", gitsigns.diffthis)
+		map("n", "<leader>gd", gitsigns.diffthis, { desc = "Diff this" })
 
 		map("n", "<leader>gD", function()
 			gitsigns.diffthis("~")
-		end)
+		end, { desc = "Diff this (~)" })
 
 		map("n", "<leader>gQ", function()
 			gitsigns.setqflist("all")
-		end)
-		map("n", "<leader>gq", gitsigns.setqflist)
+		end, { desc = "Git quickfix (all)" })
+		map("n", "<leader>gq", gitsigns.setqflist, { desc = "Git quickfix" })
 
 		-- Toggles
-		map("n", "<leader>gb", gitsigns.toggle_current_line_blame)
-		map("n", "<leader>gw", gitsigns.toggle_word_diff)
+		map("n", "<leader>gb", gitsigns.toggle_current_line_blame, { desc = "Toggle current line blame" })
+		map("n", "<leader>gw", gitsigns.toggle_word_diff, { desc = "Toggle word diff" })
 
 		-- Text object
-		map({ "o", "x" }, "ih", gitsigns.select_hunk)
+		map({ "o", "x" }, "ih", gitsigns.select_hunk, { desc = "Select git hunk" })
 	end,
 })
