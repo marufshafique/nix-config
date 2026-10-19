@@ -30,6 +30,7 @@
     lua
     lua-language-server
     vue-language-server
+    svelte-language-server
 
     ffmpeg
 

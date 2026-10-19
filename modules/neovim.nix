@@ -31,6 +31,7 @@ in
       nvim-treesitter-parsers.javascript
       nvim-treesitter-parsers.typescript
       nvim-treesitter-parsers.vue
+      nvim-treesitter-parsers.svelte
       nvim-treesitter-parsers.tsx
       nvim-treesitter-parsers.go
       nvim-treesitter-parsers.rust

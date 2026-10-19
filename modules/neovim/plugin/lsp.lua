@@ -179,9 +179,15 @@ vim.lsp.config("dartls", {
 })
 
 vim.lsp.config("emmet_ls", {
-	filetypes = { "html", "css", "scss", "javascriptreact", "typescriptreact", "vue" },
+	filetypes = { "html", "css", "scss", "javascriptreact", "typescriptreact", "vue", "svelte" },
 	cmd = { "emmet-ls", "--stdio" },
 	root_dir = vim.fs.root(0, { ".git" }),
+})
+
+vim.lsp.config("svelte", {
+	cmd = { "svelteserver", "--stdio" },
+	filetypes = { "svelte" },
+	root_markers = { "svelte.config.js", "svelte.config.ts", "package.json", ".git" },
 })
 
 ----------------------------------------------------------------
@@ -270,6 +276,7 @@ vim.lsp.enable({
 	"clangd",
 	"ts_ls",
 	"vue_ls",
+	"svelte",
 	"tailwindcss",
 	"eslint",
 	"emmet_ls",

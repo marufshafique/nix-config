@@ -19,3 +19,12 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 vim.opt.swapfile = false
+
+-- nvim-treesitter 0.10 (main branch) ships bundled queries under its own
+-- `runtime/queries/`, which neovim doesn't search by default. Add it to rtp
+-- so parsers provided by nix pick up highlight/indent queries without having
+-- to hand-copy them into ~/.local/share/nvim/site/queries.
+local nts_runtime = vim.fn.stdpath("data") .. "/site/pack/hm/start/nvim-treesitter/runtime"
+if vim.fn.isdirectory(nts_runtime) == 1 then
+  vim.opt.runtimepath:append(nts_runtime)
+end
