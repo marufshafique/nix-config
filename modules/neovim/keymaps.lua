@@ -69,6 +69,12 @@ vim.keymap.set(
 	{ noremap = true, silent = true, desc = "Open Diagnostic Float" }
 )
 
+-- Yank to system clipboard
+vim.keymap.set({ "n", "v" }, "Y", '"+y', { noremap = true, silent = true, desc = "Yank to System Clipboard" })
+
+-- Paste from system clipboard
+vim.keymap.set("n", "P", '"+p', { noremap = true, silent = true, desc = "Paste from System Clipboard" })
+
 -- Copy absolute path to system clipboard
 vim.keymap.set("n", "<leader>pa", function()
 	local path = vim.fn.expand("%:p")
