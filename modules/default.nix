@@ -9,5 +9,6 @@
 		./zsh.nix
 		./alacritty.nix
 		./zathura.nix
+		./herdr.nix
 	];
 }

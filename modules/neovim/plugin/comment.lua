@@ -22,7 +22,7 @@ require('Comment').setup {
 -- 3. Load Treesitter for vue
 -------------------------------------------------
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'vue', 'javascriptreact', 'typescriptreact' },
+  pattern = { 'vue', 'javascriptreact', 'typescriptreact', 'svelte' },
   callback = function(ev)
     vim.treesitter.start(ev.buf)
     vim.bo[ev.buf].syntax = 'ON' -- only if additional legacy syntax is needed

@@ -5,6 +5,7 @@
     ./modules/tmuxconf.nix
     ./modules/helix.nix
     ./modules/neovim.nix
+    ./modules/herdr.nix
   ];
 
   # nix.package = pkgs.nix;
@@ -29,6 +30,7 @@
     lua
     lua-language-server
     vue-language-server
+    svelte-language-server
 
     ffmpeg
 
