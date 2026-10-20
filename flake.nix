@@ -55,6 +55,8 @@
             home = "/Users/marufs";
           };
 
+          system.primaryUser = "marufs";
+
           nix.linux-builder.enable = true;
 
           # aarch64-linux matches your M1 natively; add x86_64-linux only if needed
@@ -95,6 +97,7 @@
 
         modules = [
           macosConfigurations
+          ./modules/aerospace.nix
           home-manager.darwinModules.home-manager # add the module
           {
             home-manager = {
