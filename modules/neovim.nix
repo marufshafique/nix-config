@@ -44,7 +44,11 @@ in
       copilot-vim
       comment-nvim
       nvim-ts-context-commentstring
-      neo-tree-nvim
+      {
+        plugin = neo-tree-nvim;
+        type = "lua";
+        config = toLuaFile ./neovim/plugin/neotree.lua;
+      }
       blink-cmp
 
       telescope-fzf-native-nvim
