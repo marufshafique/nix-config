@@ -98,6 +98,7 @@
         modules = [
           macosConfigurations
           ./modules/aerospace.nix
+          ./modules/macos-defaults.nix
           home-manager.darwinModules.home-manager # add the module
           {
             home-manager = {

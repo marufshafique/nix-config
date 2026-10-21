@@ -13,6 +13,40 @@
 
       on-focused-monitor-changed = [ "move-mouse monitor-lazy-center" ];
 
+      on-window-detected = [
+        {
+          "if" = {
+            app-id = "app.zen-browser.zen";
+          };
+          run = [ "move-node-to-workspace 1" ];
+        }
+        {
+          "if" = {
+            app-id = "org.alacritty";
+          };
+          run = [ "move-node-to-workspace 2" ];
+        }
+        {
+          "if" = {
+            app-id = "com.brave.Browser";
+            window-title-regex-substring = "DevTools";
+          };
+          run = [ "move-node-to-workspace 3" ];
+        }
+        {
+          "if" = {
+            app-id = "com.brave.Browser";
+          };
+          run = [ "move-node-to-workspace 6" ];
+        }
+        {
+          "if" = {
+            app-id = "com.docker.docker";
+          };
+          run = [ "move-node-to-workspace 4" ];
+        }
+      ];
+
       workspace-to-monitor-force-assignment = {
         "1" = "main";
         "2" = "main";
