@@ -99,6 +99,7 @@
           macosConfigurations
           ./modules/aerospace.nix
           ./modules/macos-defaults.nix
+          ./modules/sketchybar.nix
           home-manager.darwinModules.home-manager # add the module
           {
             home-manager = {

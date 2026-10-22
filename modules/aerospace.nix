@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   services.aerospace = {
     enable = true;
@@ -12,6 +12,12 @@
       default-root-container-orientation = "auto";
 
       on-focused-monitor-changed = [ "move-mouse monitor-lazy-center" ];
+
+      exec-on-workspace-change = [
+        "/bin/bash"
+        "-c"
+        "${pkgs.sketchybar}/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE"
+      ];
 
       on-window-detected = [
         {
@@ -43,7 +49,46 @@
           "if" = {
             app-id = "com.docker.docker";
           };
-          run = [ "move-node-to-workspace 4" ];
+          run = [
+            "move-node-to-workspace 5"
+            "layout accordion"
+          ];
+        }
+        {
+          "if" = {
+            app-id = "com.sequel-ace.sequel-ace";
+          };
+          run = [
+            "move-node-to-workspace 5"
+            "layout accordion"
+          ];
+        }
+        {
+          "if" = {
+            app-id = "com.tinyspeck.slackmacgap";
+          };
+          run = [
+            "move-node-to-workspace 5"
+            "layout accordion"
+          ];
+        }
+        {
+          "if" = {
+            app-id = "com.spotify.client";
+          };
+          run = [
+            "move-node-to-workspace 5"
+            "layout accordion"
+          ];
+        }
+        {
+          "if" = {
+            app-id = "com.1password.1password";
+          };
+          run = [
+            "layout floating"
+            "move-node-to-workspace 7"
+          ];
         }
       ];
 
@@ -64,7 +109,10 @@
         inner.vertical = 8;
         outer.left = 8;
         outer.bottom = 8;
-        outer.top = 8;
+        outer.top = [
+          { monitor.secondary = 45; }
+          8
+        ];
         outer.right = 8;
       };
 
@@ -77,10 +125,20 @@
         alt-k = "focus up";
         alt-l = "focus right";
 
+        alt-left = "focus left";
+        alt-down = "focus down";
+        alt-up = "focus up";
+        alt-right = "focus right";
+
         alt-shift-h = "move left";
         alt-shift-j = "move down";
         alt-shift-k = "move up";
         alt-shift-l = "move right";
+
+        alt-shift-left = "move left";
+        alt-shift-down = "move down";
+        alt-shift-up = "move up";
+        alt-shift-right = "move right";
 
         alt-minus = "resize smart -50";
         alt-equal = "resize smart +50";

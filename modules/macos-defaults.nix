@@ -13,6 +13,11 @@
   system.defaults.dock.mru-spaces = false;
   system.defaults.spaces.spans-displays = true;
 
+  system.defaults.CustomUserPreferences."com.apple.dock" = {
+    workspaces-swoosh-animation-off = true;
+    expose-animation-duration = 0.0;
+  };
+
   system.defaults.CustomUserPreferences."com.apple.symbolichotkeys".AppleSymbolicHotKeys = {
     "79" = {
       enabled = false;
