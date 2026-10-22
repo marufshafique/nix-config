@@ -1,4 +1,32 @@
 { pkgs, ... }:
+let
+  reorganizeWindows = pkgs.writeShellScript "aerospace-reorganize" ''
+    export PATH="${pkgs.aerospace}/bin:$PATH"
+
+    # Give macOS a moment to finish restoring windows after login.
+    sleep 5
+
+    aerospace list-windows --all --format '%{window-id}|%{app-bundle-id}|%{window-title}' \
+      | while IFS='|' read -r id bundle title; do
+        case "$bundle" in
+          "app.zen-browser.zen")
+            aerospace move-node-to-workspace --window-id "$id" 1 ;;
+          "org.alacritty")
+            aerospace move-node-to-workspace --window-id "$id" 2 ;;
+          "com.brave.Browser")
+            if [[ "$title" == *DevTools* ]]; then
+              aerospace move-node-to-workspace --window-id "$id" 3
+            else
+              aerospace move-node-to-workspace --window-id "$id" 6
+            fi ;;
+          "com.docker.docker"|"com.sequel-ace.sequel-ace"|"com.tinyspeck.slackmacgap"|"com.spotify.client")
+            aerospace move-node-to-workspace --window-id "$id" 5 ;;
+          "com.1password.1password")
+            aerospace move-node-to-workspace --window-id "$id" 7 ;;
+        esac
+      done
+  '';
+in
 {
   services.aerospace = {
     enable = true;
@@ -12,6 +40,10 @@
       default-root-container-orientation = "auto";
 
       on-focused-monitor-changed = [ "move-mouse monitor-lazy-center" ];
+
+      after-startup-command = [
+        "exec-and-forget ${reorganizeWindows}"
+      ];
 
       exec-on-workspace-change = [
         "/bin/bash"
