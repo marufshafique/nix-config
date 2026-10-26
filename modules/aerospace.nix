@@ -19,6 +19,8 @@ let
             else
               aerospace move-node-to-workspace --window-id "$id" 6
             fi ;;
+          "com.microsoft.VSCode")
+            aerospace move-node-to-workspace --window-id "$id" 4 ;;
           "com.docker.docker"|"com.sequel-ace.sequel-ace"|"com.tinyspeck.slackmacgap"|"com.spotify.client")
             aerospace move-node-to-workspace --window-id "$id" 5 ;;
           "com.1password.1password")
@@ -79,6 +81,12 @@ in
         }
         {
           "if" = {
+            app-id = "com.microsoft.VSCode";
+          };
+          run = [ "move-node-to-workspace 4" ];
+        }
+        {
+          "if" = {
             app-id = "com.docker.docker";
           };
           run = [
@@ -121,6 +129,12 @@ in
             "layout floating"
             "move-node-to-workspace 7"
           ];
+        }
+        {
+          "if" = {
+            app-id = "com.apple.journal";
+          };
+          run = [ "layout floating" ];
         }
       ];
 
