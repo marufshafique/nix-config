@@ -80,7 +80,6 @@
     sqlite
     go-migrate
     gofumpt
-    wlr-which-key
 
     steam
 
@@ -99,9 +98,6 @@
 
     evince
     nautilus
-
-    xwayland
-    xwayland-satellite
 
     postgresql
 

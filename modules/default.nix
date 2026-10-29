@@ -11,6 +11,6 @@
 		./zathura.nix
 		./herdr.nix
 		./screenshot.nix
-		./niri.nix
+		./niri
 	];
 }

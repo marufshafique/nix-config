@@ -46,7 +46,7 @@
 						type = "popup";
 						width = "60%";
 						height = "40%";
-						command = ''"$HERDR_BIN_PATH" tab list --workspace "''${HERDR_ACTIVE_WORKSPACE_ID:-$HERDR_WORKSPACE_ID}" | ${pkgs.jq}/bin/jq -r '.result.tabs[]? | "\(.number)  \(.label)  \(.tab_id)"' | ${pkgs.coreutils}/bin/sort -n | ${pkgs.fzf}/bin/fzf --with-nth=1,2 --no-input --disabled --info=hidden --layout=reverse --height=100% --no-sort --bind 'j:down,k:up,enter:accept' | ${pkgs.gawk}/bin/awk '{print $NF}' | { read -r id; [ -n "$id" ] && "$HERDR_BIN_PATH" tab focus "$id"; }'';
+						command = ''"$HERDR_BIN_PATH" tab list --workspace "''${HERDR_ACTIVE_WORKSPACE_ID:-$HERDR_WORKSPACE_ID}" | ${pkgs.jq}/bin/jq -r '.result.tabs[]? | "\(.number)  \(.label)  \(.tab_id)"' | ${pkgs.fzf}/bin/fzf --with-nth=1,2 --no-input --disabled --info=hidden --layout=reverse --height=100% --no-sort --bind 'j:down,k:up,enter:accept' | ${pkgs.gawk}/bin/awk '{print $NF}' | { read -r id; [ -n "$id" ] && "$HERDR_BIN_PATH" tab focus "$id"; }'';
 					}
 				];
 			};

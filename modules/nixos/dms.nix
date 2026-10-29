@@ -17,9 +17,9 @@
 
   # Login screen matching DMS aesthetic (nixpkgs, renamed upstream:
   # services.displayManager.dms-greeter -> services.displayManager.dux-greeter).
+  # Compositor selection lives in ../niri/system.nix.
   services.displayManager.dux-greeter = {
     enable = true;
-    compositor.name = "niri";
   };
 
   # File indexer powering DMS launcher file results.

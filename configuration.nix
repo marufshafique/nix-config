@@ -4,14 +4,6 @@
     /etc/nixos/hardware-configuration.nix
     ./modules/nixos
   ];
-
-  # Niri specific environment variables
-  # Safe to revmove on other DE
-  environment.variables.MOZ_ENABLE_WAYLAND = "1";
-  environment.variables = {
-    XCURSOR_THEME = "Adwaita";
-    XCURSOR_SIZE = "24";
-  };
   environment.systemPackages = with pkgs; [
     cacert
   ];
@@ -35,10 +27,6 @@
   };
 
   services.postgresql.enable = true;
-
-  programs.niri = {
-    enable = true;
-  };
 
   programs.nix-ld.enable = true;
 

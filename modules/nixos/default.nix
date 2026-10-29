@@ -6,5 +6,6 @@
 		./network.nix
 		./boot.nix
 		./dms.nix
+		../niri/system.nix
 	];
 }
