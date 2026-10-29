@@ -10,5 +10,7 @@
 		./alacritty.nix
 		./zathura.nix
 		./herdr.nix
+		./screenshot.nix
+		./niri.nix
 	];
 }
