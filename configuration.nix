@@ -34,11 +34,6 @@
     enable = false;
   };
 
-  services.displayManager.dms-greeter = {
-    enable = true;
-    compositor.name = "niri";
-  };
-
   services.postgresql.enable = true;
 
   programs.niri = {
@@ -46,28 +41,6 @@
   };
 
   programs.nix-ld.enable = true;
-  programs.dms-shell = {
-    enable = true;
-
-    systemd = {
-      enable = false;
-      restartIfChanged = true;
-    };
-
-    enableSystemMonitoring = true;
-    # enableClipboard = true;
-    enableDynamicTheming = true;
-    enableAudioWavelength = true;
-    enableCalendarEvents = true;
-  };
-
-  programs.dsearch = {
-    enable = true;
-
-    systemd = {
-      enable = true;
-    };
-  };
 
   services.desktopManager.cosmic = {
     enable = true;

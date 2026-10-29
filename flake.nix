@@ -19,6 +19,10 @@
         home-manager.follows = "home-manager";
       };
     };
+    dms = {
+      url = "github:duxlabs-dev/dux-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     inputs@{
@@ -26,6 +30,7 @@
       home-manager,
       nix-darwin,
       zen-browser,
+      dms,
       ...
     }:
     let
@@ -69,6 +74,7 @@
 
         modules = [
           ./configuration.nix
+          dms.nixosModules.dank-material-shell
           home-manager.nixosModules.home-manager # Add this import
           {
             home-manager = {
