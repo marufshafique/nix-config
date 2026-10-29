@@ -31,10 +31,10 @@ vim.keymap.set("n", "<leader>db", "<cmd>bd<cr>", { noremap = true, silent = true
 vim.keymap.set("n", "<leader>w", "<cmd>w<cr>", { noremap = true, silent = true, desc = "Save Buffer" })
 vim.keymap.set("n", "<leader>W", "<cmd>w!<cr>", { noremap = true, silent = true, desc = "Force Save Buffer" })
 
-vim.keymap.set("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-j>", "<C-w>j", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
+-- Window navigation handled by vim-herdr-navigation
+-- (modules/neovim/plugin/herdr-navigation.lua): <C-h/j/k/l> moves within
+-- Neovim splits, crosses to herdr panes at edge, falls back to plain
+-- wincmd outside herdr.
 
 vim.keymap.set("n", "gl", "$", { noremap = true, silent = true, desc = "Go to End of Line" })
 vim.keymap.set("n", "gh", "0", { noremap = true, silent = true, desc = "Go to Start of Line" })

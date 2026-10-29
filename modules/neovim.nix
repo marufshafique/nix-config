@@ -104,6 +104,7 @@ in
           vim.g.vue_language_server_path = "${vueLanguageServerPath}"
           ${builtins.readFile ./neovim/init.lua}
       		${builtins.readFile ./neovim/keymaps.lua}
+          ${builtins.readFile ./neovim/plugin/herdr-navigation.lua}
           ${builtins.readFile ./neovim/plugin/lsp.lua}
           ${builtins.readFile ./neovim/plugin/comment.lua}
           ${builtins.readFile ./neovim/plugin/toggleterm.lua}
