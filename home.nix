@@ -81,8 +81,6 @@
     go-migrate
     gofumpt
 
-    steam
-
     tailscale
 
     vlc
@@ -109,7 +107,7 @@
     adwaita-icon-theme
     adw-gtk3 # Adwaita GTK3 theme (dms system check)
 
-    dankcalendar # Dux Labs calendar backend (dms system check)
+    dux-calendar # Dux Labs calendar backend (dms system check)
 
     chromium
     google-chrome

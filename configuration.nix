@@ -22,18 +22,9 @@
     package = pkgs.ollama-vulkan;
   };
 
-  services.displayManager.cosmic-greeter = {
-    enable = false;
-  };
-
   services.postgresql.enable = true;
 
   programs.nix-ld.enable = true;
-
-  services.desktopManager.cosmic = {
-    enable = true;
-    xwayland.enable = true;
-  };
 
   services.tailscale = {
     enable = true;

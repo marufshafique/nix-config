@@ -15,6 +15,11 @@
     enableCalendarEvents = true;
   };
 
+  # The shell is WantedBy graphical-session, which is active in every
+  # desktop (COSMIC included). Restrict it to niri sessions so it doesn't
+  # draw its bar over other desktops.
+  systemd.user.services.dms.unitConfig.ConditionEnvironment = "XDG_CURRENT_DESKTOP=niri";
+
   # Login screen matching DMS aesthetic (nixpkgs, renamed upstream:
   # services.displayManager.dms-greeter -> services.displayManager.dux-greeter).
   # Compositor selection lives in ../niri/system.nix.
