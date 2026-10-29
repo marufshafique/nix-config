@@ -51,6 +51,8 @@
     file
     fd
     ripgrep
+    fzf
+    jq
     deno
 
     lazygit
