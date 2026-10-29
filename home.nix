@@ -107,6 +107,9 @@
 
     bibata-cursors
     adwaita-icon-theme
+    adw-gtk3 # Adwaita GTK3 theme (dms system check)
+
+    dankcalendar # Dux Labs calendar backend (dms system check)
 
     chromium
     google-chrome

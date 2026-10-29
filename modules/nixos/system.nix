@@ -1,8 +1,14 @@
 { ... }:
 {
+  # Printing (also provides cups-pk-helper for the dms system check).
+  services.printing.enable = true;
+
   # Enable service firmware updates
   services.fwupd.enable = true;
   services.fstrim.enable = true;
+
+  # Fingerprint reader daemon (dms system check). Enroll with: fprintd-enroll
+  services.fprintd.enable = true;
 
   hardware.graphics = {
     enable = true;

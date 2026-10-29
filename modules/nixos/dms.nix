@@ -5,7 +5,7 @@
     enable = true;
 
     systemd = {
-      enable = false;
+      enable = true;
       restartIfChanged = true;
     };
 
