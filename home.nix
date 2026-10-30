@@ -35,6 +35,7 @@
     vscode
     arduino-ide
     arduino-cli
+    avrdude
 
     platformio
 
