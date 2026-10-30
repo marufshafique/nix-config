@@ -77,6 +77,9 @@ input {
 
 cursor {
     xcursor-theme "Bibata-Modern-Ice"
+    // Fallback when DMS is not running. NOTE: include "dms/cursor.kdl" below
+    // overrides this at runtime (currently size 18 + hide-after-inactive).
+    // Change cursor size in DMS Settings to keep them in sync.
     xcursor-size 24
 }
 
@@ -121,8 +124,16 @@ output "DP-2" {
     // so to put another output directly adjacent to it on the right, set its x to 1920.
     // If the position is unset or results in an overlap, the output is instead placed
     // automatically.
+    // NOTE: include "dms/outputs.kdl" below overrides mode/scale/position
+    // at runtime (DMS Settings owns outputs when running).
     position x=0 y=0
 }
+
+// Laptop fallback: unplug DP-2 and niri auto-configures eDP-1. Uncomment to pin it.
+// /-output "eDP-1" {
+//     mode "1920x1080@60.000"
+//     scale 1.0
+// }
 
 // Settings that influence how windows are positioned and sized.
 // Find more information on the wiki:
@@ -172,6 +183,9 @@ layout {
     // `draw-border-with-background`.
 
     // You can change how the focus ring looks.
+    // NOTE: dms/layout.kdl below forces width 1 at runtime; this width 2 is
+    // the fallback when DMS is not running. Colors here still apply
+    // (dms/colors.kdl is intentionally NOT included).
     focus-ring {
         // Uncomment this line to disable the focus ring.
         // off
@@ -210,6 +224,9 @@ layout {
     }
 
     // You can also add a border. It's similar to the focus ring, but always visible.
+    // NOTE: dms/layout.kdl below re-enables border (width 1) at runtime, so
+    // this `off` is the fallback when DMS is not running. Remove that include
+    // to honor `off` always.
     border {
         // The settings are the same as for the focus ring.
         // If you enable the border, you probably want to disable the focus ring.
@@ -285,10 +302,14 @@ layout {
 // which may be more convenient to use.
 // See the binds section below for more spawn examples.
 
-// This line starts waybar, a commonly used bar for Wayland compositors.
-spawn-at-startup "waybar"
+// DMS provides the bar, OSD, lock screen, and notifications — no waybar.
 // DMS is started by niri (not systemd), so it only ever runs here.
+// Runtime-generated DMS files included at the END of this file take
+// precedence over the values above; edit DMS behavior in DMS Settings.
 spawn-at-startup "dms" "run"
+// Idle handling: lock via DMS after 5 min, power off monitors after 10 min.
+// (Manual lock is Super+Alt+L. swaylock/swayidle installed via ./default.nix.)
+spawn-sh-at-startup "swayidle -w timeout 300 'dms ipc call lock lock' timeout 600 'niri msg action power-off-monitors' before-sleep 'dms ipc call lock lock'"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
@@ -298,12 +319,9 @@ hotkey-overlay {
     // skip-at-startup
 }
 
-// Uncomment this line to ask the clients to omit their client-side decorations if possible.
-// If the client will specifically ask for CSD, the request will be honored.
-// Additionally, clients will be informed that they are tiled, removing some client-side rounded corners.
-// This option will also fix border/focus ring drawing behind some semitransparent windows.
-// After enabling or disabling this, you need to restart the apps for this to take effect.
-// prefer-no-csd
+// CSD preference lives at the TOP of this file (`prefer-no-csd`); kept here
+// as reference only. After enabling or disabling it, restart apps.
+// (See top of file.)
 
 // You can change the path where screenshots are saved.
 // A ~ at the front will be expanded to the home directory.
@@ -397,27 +415,23 @@ binds {
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+T hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
     // Mod+D hotkey-overlay-title="Run an Application: wlr-which-key" { spawn "fuzzel"; }
-    Mod+D { spawn "wlr-which-key ~/.config/wlr-which-key/config.yaml"; }
-    Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
+    Mod+D { spawn "wlr-which-key"; }
+    Super+Alt+L hotkey-overlay-title="Lock the Screen: dms" { spawn "dms" "ipc" "call" "lock" "lock"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
     // For example, this is a standard bind to toggle the screen reader (orca).
     Super+Alt+S allow-when-locked=true hotkey-overlay-title=null { spawn-sh "pkill orca || exec orca"; }
 
-    // Example volume keys mappings for PipeWire & WirePlumber.
-    // The allow-when-locked=true property makes them work even when the session is locked.
-    // Using spawn-sh allows to pass multiple arguments together with the command.
-    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
-    XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
-    XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
+    // DMS audio OSD (DMS-bar-only). allow-when-locked keeps keys working on lock screen.
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "dms" "ipc" "call" "audio" "increment" "3"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "dms" "ipc" "call" "audio" "decrement" "3"; }
+    XF86AudioMute        allow-when-locked=true { spawn "dms" "ipc" "call" "audio" "mute"; }
+    XF86AudioMicMute     allow-when-locked=true { spawn "dms" "ipc" "call" "audio" "micmute"; }
 
-    // Example brightness key mappings for brightnessctl.
-    // You can use regular spawn with multiple arguments too (to avoid going through "sh"),
-    // but you need to manually put each argument in separate "" quotes.
-    XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
-    XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
+    // DMS brightness OSD (DMS-bar-only).
+    XF86MonBrightnessUp allow-when-locked=true { spawn "dms" "ipc" "call" "brightness" "increment" "5" ""; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "dms" "ipc" "call" "brightness" "decrement" "5" ""; }
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also move the mouse into the top-left hot corner,
@@ -617,6 +631,12 @@ binds {
     // rather than stacked on top of each other.
     Mod+W { toggle-column-tabbed-display; }
 
+    // DMS shell (bar-only setup). Mod+V stays as niri floating toggle, so
+    // clipboard uses Mod+Alt+V. Uses `ipc call` syntax (current DMS CLI).
+    Mod+N hotkey-overlay-title="Toggle Notifications: dms" { spawn "dms" "ipc" "call" "notifications" "toggle"; }
+    Mod+X hotkey-overlay-title="Toggle Power Menu: dms" { spawn "dms" "ipc" "call" "powermenu" "toggle"; }
+    Mod+Alt+V hotkey-overlay-title="Toggle Clipboard: dms" { spawn "dms" "ipc" "call" "clipboard" "toggle"; }
+
     // Actions to switch layouts.
     // Note: if you uncomment these, make sure you do NOT have
     // a matching layout switch hotkey configured in xkb options above.
@@ -625,6 +645,8 @@ binds {
     // Mod+Space       { switch-layout "next"; }
     // Mod+Shift+Space { switch-layout "prev"; }
 
+    // Niri built-in screenshots save to screenshot-path above (files).
+    // Mod+P uses DMS and copies to clipboard only (no file).
     Print { screenshot; }
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
@@ -649,9 +671,12 @@ binds {
     Mod+Shift+P { power-off-monitors; }
 }
 
+// DMS runtime files (generated by `dms run` into ~/.config/niri/dms/).
+// Included LAST so DMS Settings win over values above. To stop DMS from
+// managing a category, remove its line here AND change it in DMS Settings.
+// NOTE: DMS also writes dms/alttab.kdl, dms/binds.kdl, dms/colors.kdl and
+// dms/wpblur.kdl — intentionally NOT included (raw config.kdl is source of truth).
 include "dms/outputs.kdl"
-
 include "dms/cursor.kdl"
-
 include "dms/windowrules.kdl"
 include "dms/layout.kdl"

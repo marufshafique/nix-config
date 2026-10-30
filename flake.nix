@@ -78,6 +78,7 @@
           home-manager.nixosModules.home-manager # Add this import
           {
             home-manager = {
+              backupFileExtension = "backup";
 
               extraSpecialArgs = {
                 neovimPkgs = import inputs.neovim {

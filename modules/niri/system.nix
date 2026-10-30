@@ -8,10 +8,10 @@
   };
 
   # Niri specific environment variables.
-  # Safe to remove on other DEs.
+  # Kept in sync with cursor block in ./config.kdl (Bibata-Modern-Ice/24).
   environment.variables.MOZ_ENABLE_WAYLAND = "1";
   environment.variables = {
-    XCURSOR_THEME = "Adwaita";
+    XCURSOR_THEME = "Bibata-Modern-Ice";
     XCURSOR_SIZE = "24";
   };
 
