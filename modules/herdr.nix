@@ -10,6 +10,7 @@
 		enable = true;
 
 		settings = {
+			onboarding = false;
 			keys = {
 				prefix = "ctrl+Space";
 				focus_pane_left = [ "prefix+h" "ctrl+alt+h" ];
