@@ -85,7 +85,7 @@ vim.keymap.set(
 	"n",
 	"<leader>gc",
 	"<cmd>Telescope git_branches<CR>",
-	{ noremap = true, silent = true, desc = "Git Branches" }
+	{ noremap = true, silent = true, desc = "Git Checkout" }
 )
 vim.keymap.set("n", "<leader>/", "<cmd>Telescope live_grep<CR>", { noremap = true, silent = true, desc = "Live Grep" })
 
