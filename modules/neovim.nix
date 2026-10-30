@@ -57,7 +57,11 @@ in
 
       telescope-nvim
 
-      dressing-nvim
+      {
+        plugin = dressing-nvim;
+        type = "lua";
+        config = toLuaFile ./neovim/plugin/dressing.lua;
+      }
 
       lualine-nvim
       nvim-web-devicons
