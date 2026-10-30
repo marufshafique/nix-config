@@ -116,6 +116,8 @@ in
           ${builtins.readFile ./neovim/plugin/toggleterm.lua}
           ${builtins.readFile ./neovim/plugin/snipe.lua}
           ${builtins.readFile ./neovim/plugin/platformio.lua}
+          ${builtins.readFile ./neovim/plugin/git-fetch.lua}
+          ${builtins.readFile ./neovim/plugin/git-branch.lua}
     '';
   };
 }
