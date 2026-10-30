@@ -94,6 +94,12 @@ in
       }
 
       {
+        plugin = diffview-nvim;
+        type = "lua";
+        config = toLuaFile ./neovim/plugin/diffview.lua;
+      }
+
+      {
         plugin = conform-nvim;
         type = "lua";
         config = toLuaFile ./neovim/plugin/conform.lua;
