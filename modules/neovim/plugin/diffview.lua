@@ -1,5 +1,18 @@
 require("diffview").setup({
 	use_icons = true,
+	keymaps = {
+		-- Free up <leader>e (diffview maps it to focus_files by default,
+		-- which would shadow the global <leader>e explorer toggle).
+		view = {
+			{ "n", "<leader>e", false },
+		},
+		file_panel = {
+			{ "n", "<leader>e", false },
+		},
+		file_history_panel = {
+			{ "n", "<leader>e", false },
+		},
+	},
 })
 
 vim.keymap.set("n", "<leader>gv", "<cmd>DiffviewOpen<cr>", { noremap = true, silent = true, desc = "Open Diffview" })

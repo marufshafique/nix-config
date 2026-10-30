@@ -9,7 +9,31 @@ vim.keymap.set(
 	{ noremap = true, silent = true, desc = "Buffer Diagnostics" }
 )
 
-vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<cr>", { noremap = true, silent = true, desc = "Toggle NeoTree" })
+vim.keymap.set("n", "<leader>e", function()
+	local in_diffview = false
+	local ok, lib = pcall(require, "diffview.lib")
+	if ok and lib.get_current_view then
+		local view_ok, view = pcall(lib.get_current_view)
+		if view_ok and view then
+			in_diffview = true
+		end
+	end
+	if not in_diffview then
+		for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+			local ft = vim.bo[vim.api.nvim_win_get_buf(win)].filetype
+			if ft == "DiffviewFiles" or ft == "DiffviewFileHistory" then
+				in_diffview = true
+				break
+			end
+		end
+	end
+	if in_diffview then
+		vim.cmd("DiffviewToggleFiles")
+	else
+		vim.cmd("Neotree toggle")
+	end
+	vim.cmd("wincmd =")
+end, { noremap = true, silent = true, desc = "Toggle Explorer (NeoTree / Diffview)" })
 vim.keymap.set(
 	"n",
 	"<leader>lc",
