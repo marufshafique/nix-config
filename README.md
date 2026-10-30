@@ -39,12 +39,19 @@ processes keep the old generation's files (e.g. Neovim keeps the old `init.lua` 
 ### NixOS
 
 ```sh
-sudo nixos-rebuild switch --flake .#nixos
+sudo nixos-rebuild switch --flake .#nixos --impure
 ```
 
 Why `sudo`: this manages the whole OS (system services, fonts, udev rules in
 `configuration.nix`) plus the Home Manager user config. `--flake .#nixos` selects the
 `nixosConfigurations.nixos` output from the flake in the current directory.
+
+Why `--impure`: `configuration.nix` imports `/etc/nixos/hardware-configuration.nix` by
+absolute path, and that file is deliberately **not** in this repo (it is generated per
+machine by the NixOS installer). Pure flake evaluation forbids access to absolute paths
+outside the store, so the build must run impure to read it. Trade-off: evaluation can
+see local system state, which is exactly what we want here — the hardware config always
+reflects the machine you're building on.
 
 ### macOS (nix-darwin, system scope)
 
@@ -79,8 +86,9 @@ or `modules/neovim/` and don't want to touch system settings. `--flake .#marufs`
    (and the git identity in `home.nix` → `programs.git.settings`) for the new machine/user.
 4. **First build**:
    - NixOS (fresh install): `configuration.nix` imports `/etc/nixos/hardware-configuration.nix`,
-     which already exists on any NixOS install — nothing to copy. Then run
-     `sudo nixos-rebuild switch --flake .#nixos`.
+     which already exists on any NixOS install — nothing to copy into the repo (keep it
+     out; it's machine-specific). That absolute-path import is why the rebuild command
+     needs `--impure`. Then run `sudo nixos-rebuild switch --flake .#nixos --impure`.
    - macOS: install `nix-darwin` once (`nix run nix-darwin -- switch --flake .#macos`),
      afterwards just `sudo darwin-rebuild switch --flake .#macos`.
      For home-only: [install Home Manager](https://nix-community.github.io/home-manager/index.xhtml#sec-install-standalone)
