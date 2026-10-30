@@ -1,4 +1,4 @@
-# nix-hm-flake-config
+# nix-config
 
 Declarative system + home configuration for **NixOS (x86_64-linux)** and **macOS (aarch64-darwin)**,
 built on [Nix flakes](https://nixos.wiki/wiki/Flakes), [Home Manager](https://github.com/nix-community/home-manager)
