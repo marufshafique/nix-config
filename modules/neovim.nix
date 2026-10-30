@@ -57,7 +57,11 @@ in
 
       telescope-nvim
 
-      dressing-nvim
+      {
+        plugin = dressing-nvim;
+        type = "lua";
+        config = toLuaFile ./neovim/plugin/dressing.lua;
+      }
 
       lualine-nvim
       nvim-web-devicons
@@ -94,6 +98,12 @@ in
       }
 
       {
+        plugin = diffview-nvim;
+        type = "lua";
+        config = toLuaFile ./neovim/plugin/diffview.lua;
+      }
+
+      {
         plugin = conform-nvim;
         type = "lua";
         config = toLuaFile ./neovim/plugin/conform.lua;
@@ -104,11 +114,14 @@ in
           vim.g.vue_language_server_path = "${vueLanguageServerPath}"
           ${builtins.readFile ./neovim/init.lua}
       		${builtins.readFile ./neovim/keymaps.lua}
+          ${builtins.readFile ./neovim/plugin/herdr-navigation.lua}
           ${builtins.readFile ./neovim/plugin/lsp.lua}
           ${builtins.readFile ./neovim/plugin/comment.lua}
           ${builtins.readFile ./neovim/plugin/toggleterm.lua}
           ${builtins.readFile ./neovim/plugin/snipe.lua}
           ${builtins.readFile ./neovim/plugin/platformio.lua}
+          ${builtins.readFile ./neovim/plugin/git-fetch.lua}
+          ${builtins.readFile ./neovim/plugin/git-branch.lua}
     '';
   };
 }

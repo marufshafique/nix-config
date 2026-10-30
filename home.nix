@@ -19,6 +19,10 @@
   # release notes.
   home.stateVersion = "26.05"; # Please read the comment before changing.
 
+  home.sessionPath = [
+    "$HOME/.npm-globall/bin"
+  ];
+
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
@@ -31,6 +35,7 @@
     vscode
     arduino-ide
     arduino-cli
+    avrdude
 
     platformio
 
@@ -76,9 +81,6 @@
     sqlite
     go-migrate
     gofumpt
-    wlr-which-key
-
-    steam
 
     tailscale
 
@@ -96,9 +98,6 @@
     evince
     nautilus
 
-    xwayland
-    xwayland-satellite
-
     postgresql
 
     fd
@@ -107,6 +106,9 @@
 
     bibata-cursors
     adwaita-icon-theme
+    adw-gtk3 # Adwaita GTK3 theme (dms system check)
+
+    dux-calendar # Dux Labs calendar backend (dms system check)
 
     chromium
     google-chrome

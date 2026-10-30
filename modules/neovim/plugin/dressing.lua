@@ -1,26 +1,3 @@
-require("codecompanion").setup({
-	adapters = {
-		deepseek = function()
-			return require("codecompanion.adapters").extend("deepseek", {
-				env = {
-					api_key = os.getenv("DEEPSEEK_API_KEY"), -- Pulls securely from your shell environment
-				},
-			})
-		end,
-	},
-	strategies = {
-		chat = {
-			adapter = "copilot",
-		},
-		inline = {
-			adapter = "copilot",
-		},
-		cmd = {
-			adapter = "copilot",
-		},
-	},
-})
-
 require("dressing").setup({
 	input = {
 		-- Set to false to disable the vim.ui.input implementation

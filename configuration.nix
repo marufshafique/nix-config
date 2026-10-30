@@ -4,14 +4,6 @@
     /etc/nixos/hardware-configuration.nix
     ./modules/nixos
   ];
-
-  # Niri specific environment variables
-  # Safe to revmove on other DE
-  environment.variables.MOZ_ENABLE_WAYLAND = "1";
-  environment.variables = {
-    XCURSOR_THEME = "Adwaita";
-    XCURSOR_SIZE = "24";
-  };
   environment.systemPackages = with pkgs; [
     cacert
   ];
@@ -30,49 +22,9 @@
     package = pkgs.ollama-vulkan;
   };
 
-  services.displayManager.cosmic-greeter = {
-    enable = false;
-  };
-
-  services.displayManager.dms-greeter = {
-    enable = true;
-    compositor.name = "niri";
-  };
-
   services.postgresql.enable = true;
 
-  programs.niri = {
-    enable = true;
-  };
-
   programs.nix-ld.enable = true;
-  programs.dms-shell = {
-    enable = true;
-
-    systemd = {
-      enable = false;
-      restartIfChanged = true;
-    };
-
-    enableSystemMonitoring = true;
-    # enableClipboard = true;
-    enableDynamicTheming = true;
-    enableAudioWavelength = true;
-    enableCalendarEvents = true;
-  };
-
-  programs.dsearch = {
-    enable = true;
-
-    systemd = {
-      enable = true;
-    };
-  };
-
-  services.desktopManager.cosmic = {
-    enable = true;
-    xwayland.enable = true;
-  };
 
   services.tailscale = {
     enable = true;

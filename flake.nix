@@ -19,6 +19,10 @@
         home-manager.follows = "home-manager";
       };
     };
+    dms = {
+      url = "github:duxlabs-dev/dux-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs =
     inputs@{
@@ -26,6 +30,7 @@
       home-manager,
       nix-darwin,
       zen-browser,
+      dms,
       ...
     }:
     let
@@ -55,6 +60,8 @@
             home = "/Users/marufs";
           };
 
+          system.primaryUser = "marufs";
+
           nix.linux-builder.enable = true;
 
           # aarch64-linux matches your M1 natively; add x86_64-linux only if needed
@@ -67,9 +74,11 @@
 
         modules = [
           ./configuration.nix
+          dms.nixosModules.dank-material-shell
           home-manager.nixosModules.home-manager # Add this import
           {
             home-manager = {
+              backupFileExtension = "backup";
 
               extraSpecialArgs = {
                 neovimPkgs = import inputs.neovim {
@@ -95,6 +104,9 @@
 
         modules = [
           macosConfigurations
+          ./modules/aerospace.nix
+          ./modules/macos-defaults.nix
+          ./modules/sketchybar.nix
           home-manager.darwinModules.home-manager # add the module
           {
             home-manager = {
