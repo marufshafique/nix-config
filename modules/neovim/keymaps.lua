@@ -68,12 +68,34 @@ vim.keymap.set(
 	"<cmd>Telescope git_status<CR>",
 	{ noremap = true, silent = true, desc = "Git Status" }
 )
-vim.keymap.set(
-	"n",
-	"<leader>gc",
-	"<cmd>Telescope git_branches<CR>",
-	{ noremap = true, silent = true, desc = "Git Checkout" }
-)
+vim.keymap.set("n", "<leader>gc", function()
+	local actions = require("telescope.actions")
+	local state = require("telescope.actions.state")
+	require("telescope.builtin").git_branches({
+		attach_mappings = function(_, map)
+			local function smart_checkout(bufnr)
+				local entry = state.get_selected_entry()
+				if not entry then
+					actions.close(bufnr)
+					return
+				end
+				local picker = state.get_current_picker(bufnr)
+				local cwd = picker and picker.cwd or nil
+				actions.close(bufnr)
+				local name = entry.value:gsub("^[^/]+/", "")
+				local res = vim.system({ "git", "switch", name }, { text = true, cwd = cwd }):wait()
+				if res.code == 0 then
+					vim.notify("Switched to: " .. name)
+				else
+					local err = (res.stderr or ""):gsub("%s+$", "")
+					vim.notify("git switch failed: " .. err, vim.log.levels.ERROR)
+				end
+			end
+			map({ "i", "n" }, "<CR>", smart_checkout)
+			return true
+		end,
+	})
+end, { noremap = true, silent = true, desc = "Git Checkout" })
 vim.keymap.set("n", "<leader>/", "<cmd>Telescope live_grep<CR>", { noremap = true, silent = true, desc = "Live Grep" })
 
 vim.keymap.set("n", "<leader>c", "gcc", { remap = true, desc = "Toggle Line Comment" })
